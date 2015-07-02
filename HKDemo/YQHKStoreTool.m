@@ -6,14 +6,14 @@
 //  Copyright © 2015年 MobileNow. All rights reserved.
 //
 
-#import "YQHKStore.h"
+#import "YQHKStoreTool.h"
 #import <HealthKit/HealthKit.h>
-@interface YQHKStore()
+@interface YQHKStoreTool()
 
 @property (nonatomic, strong)HKHealthStore *healthStore;
 
 @end
-@implementation YQHKStore
+@implementation YQHKStoreTool
 #pragma mark - 初始化方法
 - (HKHealthStore *)healthStore{
     if (!_healthStore) {
@@ -26,7 +26,7 @@
  * 构造
  */
 + (instancetype)shareTool{
-    YQHKStore *tool = [[YQHKStore alloc]init];
+    YQHKStoreTool *tool = [[YQHKStoreTool alloc]init];
     return tool;
 }
 
@@ -35,7 +35,7 @@
  */
 + (instancetype)allocWithZone:(struct _NSZone *)zone
 {
-    static YQHKStore *tool;
+    static YQHKStoreTool *tool;
     if (tool == nil) {
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
@@ -47,9 +47,12 @@
 #pragma mark - 公共方法
 /**请求计步器读取权限*/
 - (void)requestAuthorization{
-
+    
+    //1.定义存取类型
     NSSet *readTypes = [self getTypesToRead];
     NSSet *writeTypes = [self getTypesToWrite];
+    
+    //2.向HealthKit发出请求
     [self.healthStore requestAuthorizationToShareTypes:writeTypes readTypes:readTypes completion:^(BOOL success, NSError * __nullable error) {
         if (!success) {
             NSLog(@"You didn't allow HealthKit to access these read/write data types. In your app, try to handle this error gracefully when a user decides not to provide access. The error was: %@. If you're using a simulator, try it on a device.", error);
@@ -78,12 +81,57 @@
     }];
 }
 
-- (void)getStepCount{
+- (void)getStepCountWithStartDate:(NSDate*)startDate EndDate:(NSDate*)endDate PerMinutes:(NSInteger)perMinutes Completion:(Completion)completion Faild:(Faild)faild{
     NSString *stepCountID = HKQuantityTypeIdentifierStepCount;
     HKQuantityType *stepCountType = [HKQuantityType quantityTypeForIdentifier:stepCountID];
-
     HKStatisticsOptions sumoptions = HKStatisticsOptionCumulativeSum;
     
+    //获得某一时间段的数
+    NSDateComponents *stepDC = [[NSDateComponents alloc]init];
+    stepDC.minute = perMinutes;
+    NSPredicate *predicate = [HKQuery predicateForSamplesWithStartDate:startDate endDate:endDate options:HKQueryOptionStrictStartDate];
+    
+    HKStatisticsCollectionQuery *collectionQuery ;
+    collectionQuery = [[HKStatisticsCollectionQuery alloc]initWithQuantityType:stepCountType quantitySamplePredicate:predicate options:sumoptions anchorDate:startDate intervalComponents:stepDC];
+    
+    collectionQuery.initialResultsHandler = ^(HKStatisticsCollectionQuery *query, HKStatisticsCollection * __nullable result, NSError * __nullable error){
+        //        NSLog(@"result = %@， count = %i ",result,(int)result.statistics.count);
+        if (error) {
+            faild(error);
+            return ;
+        }
+        NSMutableArray *tempArray = [NSMutableArray array];
+        
+        
+        [result enumerateStatisticsFromDate:startDate toDate:endDate withBlock:^(HKStatistics * __nonnull result, BOOL * __nonnull stop) {
+            HKQuantity *sum = [result sumQuantity];
+            
+            YQStepCountModel *model = [[YQStepCountModel alloc]init];
+            model.stepCount = [sum doubleValueForUnit:[HKUnit countUnit]];
+            model.startDate = result.startDate;
+            model.endDate = result.endDate;
+            
+            [tempArray addObject:model];
+            NSLog(@"steps : %lf, date = %@",[sum doubleValueForUnit:[HKUnit countUnit]],result.startDate);
+            
+            if (*stop==YES) {
+                NSArray *desArray = tempArray;
+                completion(desArray);
+            }
+        }];
+    };
+    
+    
+    [self.healthStore executeQuery:collectionQuery];
+}
+
+
+- (void)getStepCountOneDay:(NSDate*)dayDate{
+    
+    
+    NSString *stepCountID = HKQuantityTypeIdentifierStepCount;
+    HKQuantityType *stepCountType = [HKQuantityType quantityTypeForIdentifier:stepCountID];
+    HKStatisticsOptions sumoptions = HKStatisticsOptionCumulativeSum;
     //获得一天的数据
     HKStatisticsQuery *query;
     query = [[HKStatisticsQuery alloc]initWithQuantityType:stepCountType quantitySamplePredicate:nil options:sumoptions completionHandler:^(HKStatisticsQuery * __nonnull query, HKStatistics * __nullable result, NSError * __nullable error) {
@@ -95,30 +143,7 @@
     }];
     [self.healthStore executeQuery:query];
     
-    //获得某一时间段的数据
-    
-    NSDateComponents *stepDC = [[NSDateComponents alloc]init];
-    stepDC.minute = 10;
-    NSDate *startDate = [NSDate dateWithTimeIntervalSinceNow:-3600*10];
-    NSDate *endDate = [NSDate date];
-    NSPredicate *predicate = [HKQuery predicateForSamplesWithStartDate:startDate endDate:endDate options:HKQueryOptionStrictStartDate];
-    
-    HKStatisticsCollectionQuery *collectionQuery ;
-    collectionQuery = [[HKStatisticsCollectionQuery alloc]initWithQuantityType:stepCountType quantitySamplePredicate:predicate options:sumoptions anchorDate:startDate intervalComponents:stepDC];
-
-    collectionQuery.initialResultsHandler = ^(HKStatisticsCollectionQuery *query, HKStatisticsCollection * __nullable result, NSError * __nullable error){
-        NSLog(@"result = %@， count = %i ",result,(int)result.statistics.count);
-
-        [result enumerateStatisticsFromDate:startDate toDate:endDate withBlock:^(HKStatistics * __nonnull result, BOOL * __nonnull stop) {
-            HKQuantity *sum = [result sumQuantity];
-            NSLog(@"代码块：steps : %lf, date = %@",[sum doubleValueForUnit:[HKUnit countUnit]],result.startDate);
-        }];
-    };
-    [self.healthStore executeQuery:collectionQuery];
 }
-
-
-
 
 #pragma mark - 私有事务方法
 
@@ -130,6 +155,11 @@
 - (NSSet*)getTypesToWrite{
     NSString *stepCountID = HKQuantityTypeIdentifierStepCount;
     HKQuantityType *stepCountType = [HKQuantityType quantityTypeForIdentifier:stepCountID];
-    return [NSSet setWithObjects:stepCountType, nil];
+    return nil;
 }
+@end
+
+
+
+@implementation YQStepCountModel
 @end

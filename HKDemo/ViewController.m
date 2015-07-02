@@ -7,18 +7,18 @@
 //
 
 #import "ViewController.h"
-#import "YQHKStore.h"
+#import "YQHKStoreTool.h"
 @interface ViewController ()
-@property (nonatomic,weak) YQHKStore *yqHKStore;
+@property (nonatomic,weak) YQHKStoreTool *yqHKStore;
 
 
 @end
 
 @implementation ViewController
-- (YQHKStore *)yqHKStore
+- (YQHKStoreTool *)yqHKStore
 {
     if (!_yqHKStore) {
-        _yqHKStore = [YQHKStore shareTool];
+        _yqHKStore = [YQHKStoreTool shareTool];
     }
     return _yqHKStore;
 
@@ -31,7 +31,6 @@
     [super didReceiveMemoryWarning];
 }
 - (IBAction)btnClick:(UIButton *)sender {
-    
     if (sender.tag==0) {
         [self.yqHKStore requestAuthorization];
     }
@@ -40,7 +39,15 @@
     [self.yqHKStore saveStepCount];
 }
 - (IBAction)getStepCountq:(UIButton *)sender {
-    [self.yqHKStore getStepCount];
+    
+    
+    NSDate *startDate = [NSDate dateWithTimeIntervalSinceNow:-3600*2];
+        NSDate *endDate = [NSDate date];
+    [self.yqHKStore getStepCountWithStartDate:startDate EndDate:endDate PerMinutes:10 Completion:^(NSArray *resultModelArray) {
+        NSLog(@"读取成功 返回 = %@",resultModelArray);
+    } Faild:^(NSError *error) {
+        NSLog(@"读取错误 错误 = %@",error);
+    }];
 }
 
 @end

@@ -15,7 +15,7 @@
 		5B5A71401B44DF96007411B7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5B5A713E1B44DF96007411B7 /* LaunchScreen.storyboard */; };
 		5B5A714B1B44DF96007411B7 /* HKDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B5A714A1B44DF96007411B7 /* HKDemoTests.m */; };
 		5B5A71561B44DF96007411B7 /* HKDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B5A71551B44DF96007411B7 /* HKDemoUITests.m */; };
-		5B5A71651B44DFA8007411B7 /* YQHKStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B5A71641B44DFA8007411B7 /* YQHKStore.m */; };
+		5B5A71651B44DFA8007411B7 /* YQHKStoreTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B5A71641B44DFA8007411B7 /* YQHKStoreTool.m */; };
 		5B6D39C81B45012D001E2E4A /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B6D39C71B45012D001E2E4A /* HealthKit.framework */; };
 /* End PBXBuildFile section */
 
@@ -53,8 +53,8 @@
 		5B5A71511B44DF96007411B7 /* HKDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HKDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B5A71551B44DF96007411B7 /* HKDemoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HKDemoUITests.m; sourceTree = "<group>"; };
 		5B5A71571B44DF96007411B7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5B5A71631B44DFA8007411B7 /* YQHKStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YQHKStore.h; sourceTree = "<group>"; };
-		5B5A71641B44DFA8007411B7 /* YQHKStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YQHKStore.m; sourceTree = "<group>"; };
+		5B5A71631B44DFA8007411B7 /* YQHKStoreTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YQHKStoreTool.h; sourceTree = "<group>"; };
+		5B5A71641B44DFA8007411B7 /* YQHKStoreTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YQHKStoreTool.m; sourceTree = "<group>"; };
 		5B6D39C61B45012D001E2E4A /* HKDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = HKDemo.entitlements; sourceTree = "<group>"; };
 		5B6D39C71B45012D001E2E4A /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -110,8 +110,8 @@
 			isa = PBXGroup;
 			children = (
 				5B6D39C61B45012D001E2E4A /* HKDemo.entitlements */,
-				5B5A71631B44DFA8007411B7 /* YQHKStore.h */,
-				5B5A71641B44DFA8007411B7 /* YQHKStore.m */,
+				5B5A71631B44DFA8007411B7 /* YQHKStoreTool.h */,
+				5B5A71641B44DFA8007411B7 /* YQHKStoreTool.m */,
 				5B5A71331B44DF96007411B7 /* AppDelegate.h */,
 				5B5A71341B44DF96007411B7 /* AppDelegate.m */,
 				5B5A71361B44DF96007411B7 /* ViewController.h */,
@@ -218,7 +218,7 @@
 				TargetAttributes = {
 					5B5A712C1B44DF96007411B7 = {
 						CreatedOnToolsVersion = 7.0;
-						DevelopmentTeam = AY7TS8V94E;
+						DevelopmentTeam = K8K79B6SFC;
 						SystemCapabilities = {
 							com.apple.HealthKit = {
 								enabled = 1;
@@ -287,7 +287,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5B5A71651B44DFA8007411B7 /* YQHKStore.m in Sources */,
+				5B5A71651B44DFA8007411B7 /* YQHKStoreTool.m in Sources */,
 				5B5A71381B44DF96007411B7 /* ViewController.m in Sources */,
 				5B5A71351B44DF96007411B7 /* AppDelegate.m in Sources */,
 				5B5A71321B44DF96007411B7 /* main.m in Sources */,
