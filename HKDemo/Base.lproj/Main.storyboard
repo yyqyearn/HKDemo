@@ -32,16 +32,23 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0wG-fQ-aCd">
-                                <rect key="frame" x="49" y="337" width="60" height="30"/>
+                                <rect key="frame" x="49" y="225" width="60" height="30"/>
                                 <state key="normal" title="获得步数"/>
                                 <connections>
                                     <action selector="getStepCountq:" destination="BYZ-38-t0r" eventType="touchUpInside" id="80j-ub-k1X"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fdY-pD-UQ9" customClass="YQStaticView">
+                                <rect key="frame" x="44" y="285" width="233" height="236"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="staticView" destination="fdY-pD-UQ9" id="89W-FA-UO2"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

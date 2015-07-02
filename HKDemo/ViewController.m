@@ -8,9 +8,11 @@
 
 #import "ViewController.h"
 #import "YQHKStoreTool.h"
+#import "YQStaticView.h"
 @interface ViewController ()
 @property (nonatomic,weak) YQHKStoreTool *yqHKStore;
 
+@property (weak, nonatomic) IBOutlet YQStaticView *staticView;
 
 @end
 
@@ -25,6 +27,7 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self.staticView addLines];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -39,8 +42,6 @@
     [self.yqHKStore saveStepCount];
 }
 - (IBAction)getStepCountq:(UIButton *)sender {
-    
-    
     NSDate *startDate = [NSDate dateWithTimeIntervalSinceNow:-3600*2];
         NSDate *endDate = [NSDate date];
     [self.yqHKStore getStepCountWithStartDate:startDate EndDate:endDate PerMinutes:10 Completion:^(NSArray *resultModelArray) {

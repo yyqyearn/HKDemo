@@ -17,6 +17,9 @@
 		5B5A71561B44DF96007411B7 /* HKDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B5A71551B44DF96007411B7 /* HKDemoUITests.m */; };
 		5B5A71651B44DFA8007411B7 /* YQHKStoreTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B5A71641B44DFA8007411B7 /* YQHKStoreTool.m */; };
 		5B6D39C81B45012D001E2E4A /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B6D39C71B45012D001E2E4A /* HealthKit.framework */; };
+		FFDD5FE51B459F9400469D5C /* YQStaticView.m in Sources */ = {isa = PBXBuildFile; fileRef = FFDD5FE41B459F9400469D5C /* YQStaticView.m */; };
+		FFDD5FE81B45A0D000469D5C /* YQActivityView.m in Sources */ = {isa = PBXBuildFile; fileRef = FFDD5FE71B45A0D000469D5C /* YQActivityView.m */; };
+		FFDD5FEB1B45A1E500469D5C /* UIBezierPath+curved.m in Sources */ = {isa = PBXBuildFile; fileRef = FFDD5FEA1B45A1E500469D5C /* UIBezierPath+curved.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +60,12 @@
 		5B5A71641B44DFA8007411B7 /* YQHKStoreTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YQHKStoreTool.m; sourceTree = "<group>"; };
 		5B6D39C61B45012D001E2E4A /* HKDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = HKDemo.entitlements; sourceTree = "<group>"; };
 		5B6D39C71B45012D001E2E4A /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
+		FFDD5FE31B459F9400469D5C /* YQStaticView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YQStaticView.h; sourceTree = "<group>"; };
+		FFDD5FE41B459F9400469D5C /* YQStaticView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YQStaticView.m; sourceTree = "<group>"; };
+		FFDD5FE61B45A0D000469D5C /* YQActivityView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YQActivityView.h; sourceTree = "<group>"; };
+		FFDD5FE71B45A0D000469D5C /* YQActivityView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YQActivityView.m; sourceTree = "<group>"; };
+		FFDD5FE91B45A1E500469D5C /* UIBezierPath+curved.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+curved.h"; sourceTree = "<group>"; };
+		FFDD5FEA1B45A1E500469D5C /* UIBezierPath+curved.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+curved.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +123,12 @@
 				5B5A71641B44DFA8007411B7 /* YQHKStoreTool.m */,
 				5B5A71331B44DF96007411B7 /* AppDelegate.h */,
 				5B5A71341B44DF96007411B7 /* AppDelegate.m */,
+				FFDD5FE91B45A1E500469D5C /* UIBezierPath+curved.h */,
+				FFDD5FEA1B45A1E500469D5C /* UIBezierPath+curved.m */,
+				FFDD5FE61B45A0D000469D5C /* YQActivityView.h */,
+				FFDD5FE71B45A0D000469D5C /* YQActivityView.m */,
+				FFDD5FE31B459F9400469D5C /* YQStaticView.h */,
+				FFDD5FE41B459F9400469D5C /* YQStaticView.m */,
 				5B5A71361B44DF96007411B7 /* ViewController.h */,
 				5B5A71371B44DF96007411B7 /* ViewController.m */,
 				5B5A71391B44DF96007411B7 /* Main.storyboard */,
@@ -288,9 +303,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				5B5A71651B44DFA8007411B7 /* YQHKStoreTool.m in Sources */,
+				FFDD5FEB1B45A1E500469D5C /* UIBezierPath+curved.m in Sources */,
 				5B5A71381B44DF96007411B7 /* ViewController.m in Sources */,
 				5B5A71351B44DF96007411B7 /* AppDelegate.m in Sources */,
+				FFDD5FE81B45A0D000469D5C /* YQActivityView.m in Sources */,
 				5B5A71321B44DF96007411B7 /* main.m in Sources */,
+				FFDD5FE51B459F9400469D5C /* YQStaticView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
