@@ -116,6 +116,16 @@
             model.startDate = result.startDate;
             model.endDate = result.endDate;
             
+            if (model.stepCount<100) {
+                model.stepRank = StepRankA;
+            }else if (model.stepCount<200){
+                model.stepRank = StepRankB;
+            }else if (model.stepCount<400){
+                model.stepRank = StepRankC;
+            }else{
+                model.stepRank = StepRankD;
+            }
+            
             [tempArray addObject:model];
             NSLog(@"steps : %lf, date = %@",[sum doubleValueForUnit:[HKUnit countUnit]],result.startDate);
             

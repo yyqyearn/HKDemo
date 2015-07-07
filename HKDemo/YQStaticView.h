@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface YQStaticView : UIView
-- (void)addLines;
+- (void)createLinesWithModelArray:(NSArray*)modelArray animated:(BOOL)animated;
 @end

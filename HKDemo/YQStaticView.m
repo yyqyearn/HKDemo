@@ -7,15 +7,17 @@
 //
 #define degreesToRadians(x) (M_PI*(x)/180.0) //把角度转换成PI的方式
 #define kLineTypeCount 3 //有几种半径风格
-#define kLinesCountMain 20 //有多少条主要线
+#define kLinesCountMain 30 //有多少条主要线
 #define kLinesCountMinor 10 //有多少条次级线
 #import "YQStaticView.h"
 #import "UIBezierPath+curved.h"
+#import "YQHKStoreTool.h"
 @interface YQStaticView()
 
 @property (strong, nonatomic) NSArray *points;
 @property (strong, nonatomic) NSMutableArray *lineLayers;
-//@property (assign, nonatomic) int linesCount;
+@property (nonatomic, strong) NSArray *modelArray;
+
 
 @end
 @implementation YQStaticView
@@ -25,20 +27,14 @@
     }
     
     //点的个数
-    int count = 30;
+    NSInteger count = self.modelArray.count;
     //单位角度
     CGFloat angle = 360/count;
     //圆心点
     CGPoint center = CGPointMake(self.bounds.size.width*0.5, self.bounds.size.height*0.5);
-    
     //半径增量系数
     CGFloat add = 1;
-    //    if (self.shakeRank>ShakeRankA) {
-    //        add = 3;
-    //    }else if (self.shakeRank>ShakeRankC){
-    //        add = 20;
-    //    }
-    
+
     //创建主线条集合
     NSMutableArray *tempMainLineArray = [NSMutableArray array];
     for (int i = 0; i <kLinesCountMain ;i++) {
@@ -48,27 +44,23 @@
     
     //创建每一条线的点,根据角度
     for (int i = 0; i<count+1; i++) {
-        
+
         CGFloat radiusBase = [self getRandomNumber:50 to:50+add];
         CGFloat pAngle = angle * i; //角度
         CGFloat x=0;
         CGFloat y=0;
         
-        BOOL change = NO;
-        int changeNumb = [self getRandomNumber:1 to:2];
-        if (changeNumb!=1) {
-            change = YES;
+
+        YQStepCountModel *model = nil;
+        if (i<count) {
+            model = self.modelArray[i];
         }
         for (int j = 0; j <kLinesCountMain ;j++) {
-            
             NSMutableArray *pointsArray = tempMainLineArray[j];
-            CGFloat radius = radiusBase + 1*j;
             
-            if (change == YES) {
-                
-                CGFloat adds = [self getRandomNumber:1 to:5];
-                radius = radius*(1+adds*0.0005*j*j);
-            }
+            CGFloat radius = radiusBase + 1*j;
+                CGFloat adds = [self getRandomNumber:1 to:1.1*model.stepRank];
+                radius = radius*(1+adds*0.0003*j*j);
             
             CGFloat aAngle = 0;//弧度
         
@@ -102,7 +94,14 @@
     _points = @[tempMainLineArray];
     return _points;
 }
-- (void)addLines{
+- (void)createLinesWithModelArray:(NSArray*)modelArray animated:(BOOL)animated{
+    
+//移除之前的涂层
+    self.points = nil;
+    self.modelArray = modelArray;
+    
+    [self.lineLayers makeObjectsPerformSelector:@selector(removeFromSuperlayer)];
+    self.lineLayers = [NSMutableArray array];
     
     NSArray *mainLineArr = [self.points firstObject];
     NSArray *colorArray = [self colorsFromGreenToWhiteWithCount:mainLineArr.count];
@@ -141,13 +140,14 @@
         contentLayer.lineWidth = 1;
         contentLayer.path = bezPath.CGPath;
         
-        
-        CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-        animation.fromValue = @0;
-        animation.toValue = @1;
-        animation.duration = 5;
-        animation.delegate=self;
-        [contentLayer addAnimation:animation forKey:@"MPStroke"];
+        if (animated) {
+            CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+            animation.fromValue = @0;
+            animation.toValue = @1;
+            animation.duration = 3;
+            animation.delegate=self;
+            [contentLayer addAnimation:animation forKey:@"MPStroke"];
+        }
         
 
         [self.layer addSublayer:contentLayer];
@@ -162,6 +162,7 @@
     //    bezPath.lineCapStyle = kCGLineCapRound;//拐角处理
     //    bezPath.lineJoinStyle = kCGLineCapRound;//终点处理
 }
+
 
 
 -(int)getRandomNumber:(int)from to:(int)to

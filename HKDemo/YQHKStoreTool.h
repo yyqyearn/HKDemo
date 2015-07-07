@@ -42,8 +42,17 @@ typedef void(^CompletionGSCIS)(YQStepCountModel *stepModel);
 @end
 
 
+
+typedef NS_ENUM(NSInteger ,StepRank) {
+    StepRankA = 1,
+    StepRankB,
+    StepRankC,
+    StepRankD
+};
 @interface YQStepCountModel : NSObject
 @property (assign, nonatomic) float stepCount;
 @property (strong, nonatomic) NSDate *startDate;
 @property (strong, nonatomic) NSDate *endDate;
+@property (nonatomic,assign)StepRank stepRank;
+
 @end

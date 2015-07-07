@@ -38,7 +38,7 @@
     [super viewDidLoad];
     [self setupStepCounter];
 //    [self setupTimer];
-    [self.staticView addLines];
+//    [self.staticView addLines];
 }
 
 - (void)setupTimer{
@@ -46,7 +46,6 @@
 }
 - (void)updateStepCount{
     [self.yqHKStore getStepCountInSeconds:60*2 Completion:^(YQStepCountModel *stepModel) {
-        
         dispatch_async(dispatch_get_main_queue(), ^{
             NSLog(@"步数= %lf , 开始时间 = %@ ，结束时间 = %@", stepModel.stepCount,stepModel.startDate,stepModel.endDate);
             self.stCountLB.text = [NSString stringWithFormat:@"%lf",stepModel.stepCount];
@@ -97,6 +96,13 @@
         NSDate *endDate = [NSDate date];
     [self.yqHKStore getStepCountWithStartDate:startDate EndDate:endDate PerMinutes:10 Completion:^(NSArray *resultModelArray) {
         NSLog(@"读取成功 返回 = %@",resultModelArray);
+        for (YQStepCountModel *model in resultModelArray) {
+        NSLog(@"step = %i,开始时间 = %@",(int)model.stepCount,model.startDate);
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.staticView createLinesWithModelArray:resultModelArray animated:YES];
+        });
+
     } Faild:^(NSError *error) {
         NSLog(@"读取错误 错误 = %@",error);
     }];
