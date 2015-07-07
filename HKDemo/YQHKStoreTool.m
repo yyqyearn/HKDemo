@@ -8,9 +8,13 @@
 
 #import "YQHKStoreTool.h"
 #import <HealthKit/HealthKit.h>
+#import "NSDate+Calendar.h"
 @interface YQHKStoreTool()
 
 @property (nonatomic, strong)HKHealthStore *healthStore;
+
+/** 定时器用于每10秒更新步数 */
+@property (nonatomic, strong) NSTimer *timer;
 
 @end
 @implementation YQHKStoreTool
@@ -104,6 +108,7 @@
         
         
         [result enumerateStatisticsFromDate:startDate toDate:endDate withBlock:^(HKStatistics * __nonnull result, BOOL * __nonnull stop) {
+            
             HKQuantity *sum = [result sumQuantity];
             
             YQStepCountModel *model = [[YQStepCountModel alloc]init];
@@ -114,6 +119,12 @@
             [tempArray addObject:model];
             NSLog(@"steps : %lf, date = %@",[sum doubleValueForUnit:[HKUnit countUnit]],result.startDate);
             
+            NSLog(@"开始时间：= %@ ，最后时间：= %@",startDate,endDate);
+            
+            if ((endDate.day==result.startDate.day)&&(endDate.hour==result.startDate.hour)&&(endDate.minute==result.startDate.minute)) {
+                *stop = YES;
+            }
+            
             if (*stop==YES) {
                 NSArray *desArray = tempArray;
                 completion(desArray);
@@ -121,28 +132,14 @@
         }];
     };
     
-    
     [self.healthStore executeQuery:collectionQuery];
 }
 
 
-- (void)getStepCountOneDay:(NSDate*)dayDate{
+- (void)getStepCountInSeconds:(NSInteger)seconds Completion:(CompletionGSCIS)completion Faild:(Faild)faild{
     
     
-    NSString *stepCountID = HKQuantityTypeIdentifierStepCount;
-    HKQuantityType *stepCountType = [HKQuantityType quantityTypeForIdentifier:stepCountID];
-    HKStatisticsOptions sumoptions = HKStatisticsOptionCumulativeSum;
-    //获得一天的数据
-    HKStatisticsQuery *query;
-    query = [[HKStatisticsQuery alloc]initWithQuantityType:stepCountType quantitySamplePredicate:nil options:sumoptions completionHandler:^(HKStatisticsQuery * __nonnull query, HKStatistics * __nullable result, NSError * __nullable error) {
-        HKQuantity *sum = [result sumQuantity];
-        NSLog(@"setps : %lf",[sum doubleValueForUnit:[HKUnit countUnit]]);
-        if (error) {
-            NSLog(@"获取步数失败，错误= %@",error);
-        }
-    }];
-    [self.healthStore executeQuery:query];
-    
+   
 }
 
 #pragma mark - 私有事务方法

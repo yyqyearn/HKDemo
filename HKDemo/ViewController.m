@@ -9,10 +9,19 @@
 #import "ViewController.h"
 #import "YQHKStoreTool.h"
 #import "YQStaticView.h"
+#import <CoreMotion/CoreMotion.h>
 @interface ViewController ()
 @property (nonatomic,weak) YQHKStoreTool *yqHKStore;
 
 @property (weak, nonatomic) IBOutlet YQStaticView *staticView;
+
+@property (weak, nonatomic) IBOutlet UILabel *stCountLB;
+
+@property (nonatomic, strong) NSTimer *timer;
+
+@property (nonatomic, strong) CMPedometer *pedometer;
+
+//@property (nonatomic, strong) CMStepCounter *stepCounter;
 
 @end
 
@@ -27,12 +36,54 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self setupStepCounter];
+//    [self setupTimer];
     [self.staticView addLines];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
+- (void)setupTimer{
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(updateStepCount) userInfo:nil repeats:YES];
 }
+- (void)updateStepCount{
+    [self.yqHKStore getStepCountInSeconds:60*2 Completion:^(YQStepCountModel *stepModel) {
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSLog(@"步数= %lf , 开始时间 = %@ ，结束时间 = %@", stepModel.stepCount,stepModel.startDate,stepModel.endDate);
+            self.stCountLB.text = [NSString stringWithFormat:@"%lf",stepModel.stepCount];
+        });
+
+    } Faild:^(NSError *error) {
+        NSLog(@"获取步数错误 error = %@",error);
+    }];
+}
+
+
+- (void)setupStepCounter{
+    if ([CMPedometer isStepCountingAvailable]) {
+        self.pedometer = [[CMPedometer alloc]init];
+    }else{
+        NSLog(@"不支持计步器");
+        return;
+    }
+    NSDate *startDate = [NSDate dateWithTimeIntervalSinceNow:-1000];
+    [self.pedometer startPedometerUpdatesFromDate:startDate withHandler:^(CMPedometerData * __nullable pedometerData, NSError * __nullable error) {
+        NSLog(@"步数：=%@ ， 开始时间=%@， 结束时间=%@",pedometerData.numberOfSteps,pedometerData.startDate,pedometerData.endDate);
+    }] ;
+    
+//    if ([CMStepCounter isStepCountingAvailable]) {
+//        self.stepCounter = [[CMStepCounter alloc]init];
+//    }
+//    NSOperationQueue *que = [NSOperationQueue mainQueue];
+//    [self.stepCounter startStepCountingUpdatesToQueue:que updateOn:1 withHandler:^(NSInteger numberOfSteps, NSDate * __nonnull timestamp, NSError * __nullable error) {
+//                NSLog(@"步数：=%i ， 时间=%@",(int)numberOfSteps,timestamp);
+//
+//    }];
+
+    
+    
+}
+
+
 - (IBAction)btnClick:(UIButton *)sender {
     if (sender.tag==0) {
         [self.yqHKStore requestAuthorization];

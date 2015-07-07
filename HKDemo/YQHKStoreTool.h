@@ -9,9 +9,12 @@
 
 
 #import <Foundation/Foundation.h>
+@class YQStepCountModel;
 typedef void(^Completion)(NSArray *resultModelArray);
 
 typedef void(^Faild)(NSError *error);
+
+typedef void(^CompletionGSCIS)(YQStepCountModel *stepModel);
 
 
 @interface YQHKStoreTool : NSObject
@@ -30,7 +33,12 @@ typedef void(^Faild)(NSError *error);
 
 
 - (void)saveStepCount;
+
 - (void)getStepCountWithStartDate:(NSDate*)startDate EndDate:(NSDate*)endDate PerMinutes:(NSInteger)perMinutes Completion:(Completion)completion Faild:(Faild)faild;
+
+
+/** 定时器的方式每十秒的步数 */
+- (void)getStepCountInSeconds:(NSInteger)seconds Completion:(CompletionGSCIS)completion Faild:(Faild)faild;
 @end
 
 
