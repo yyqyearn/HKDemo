@@ -45,7 +45,7 @@
     //创建每一条线的点,根据角度
     for (int i = 0; i<count+1; i++) {
 
-        CGFloat radiusBase = [self getRandomNumber:50 to:50+add];
+        CGFloat radiusBase = 50 + [self getRandomNumber:0 to:add]*0.1;
         CGFloat pAngle = angle * i; //角度
         CGFloat x=0;
         CGFloat y=0;
@@ -58,8 +58,8 @@
         for (int j = 0; j <kLinesCountMain ;j++) {
             NSMutableArray *pointsArray = tempMainLineArray[j];
             
-            CGFloat radius = radiusBase + 1*j;
-                CGFloat adds = [self getRandomNumber:1 to:1.1*model.stepRank];
+            CGFloat radius = radiusBase + 0.5*j;
+                CGFloat adds = [self getRandomNumber:10 to:12*model.stepRank]*0.1;
                 radius = radius*(1+adds*0.0003*j*j);
             
             CGFloat aAngle = 0;//弧度
